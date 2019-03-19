@@ -1,6 +1,10 @@
+/*
+ * Author: Suki Sahota
+ * Description: Simple JavaScript Calculator
+ */
 window.onload = function() {
 
-  //create variables for calculator
+  // Create variables for calculator
   let firstNumber = "";
   let secondNumber = "";
   let operator = "";
@@ -8,7 +12,7 @@ window.onload = function() {
   let isOperatorSelected = false;
   let isCalculated = false;
 
-  //create variables for document text elements to avoid parsing HTML document repeatedly
+  // Create variables for document text elements to avoid parsing HTML document repeatedly
   let firstNumberText = document.getElementById("first-number");
   let operatorText = document.getElementById("operator");
   let secondNumberText = document.getElementById("second-number");
@@ -18,9 +22,9 @@ window.onload = function() {
   let equal = document.querySelector(".equal");
   let clear = document.querySelector(".clear");
 
-  //function to reset calculator values to neutral state
+  // Function to reset calculator values to neutral state
   function resetCalculator() {
-    //clear "calculator memory"
+    // Clear "calculator memory"
     firstNumber = "";
     secondNumber = "";
     operator = "";
@@ -28,112 +32,112 @@ window.onload = function() {
     isOperatorSelected = false;
     isCalculated = false;
 
-    //clear calculator's display
+    // Clear calculator's display
     while (firstNumberText.firstChild) firstNumberText.removeChild(firstNumberText.firstChild);
     while (operatorText.firstChild) operatorText.removeChild(operatorText.firstChild);
     while (secondNumberText.firstChild) secondNumberText.removeChild(secondNumberText.firstChild);
     while (resultText.firstChild) resultText.removeChild(resultText.firstChild);
   }
 
-  //makes calculator ready for use after page initially loads
+  // Makes calculator ready for use after page initially loads
   resetCalculator();
 
-  //this function executes when user clicks on a number
-  for (i = 0; i < numbers.length; i++) {
-    numbers[i].addEventListener("click", function(event) {
-        //reset calculator to neutral state
+  // This function executes when user clicks on a number
+  for (let i = 0; i < numbers.length; i++) {
+    numbers[i].addEventListener("click", function() {
+        // Reset calculator to neutral state
         if (isCalculated) {
           resetCalculator();
         }
   
-        //if isOperatorSelected is true, capture user selection as part of secondNumber
+        // If isOperatorSelected is true, capture user selection as part of secondNumber
         if (isOperatorSelected) {
-          //add string version of selected number to secondNumber variable
+          // Add string version of selected number to secondNumber variable
           secondNumber += this.value;
-          //show updated secondNumber on calculator's display
-          secondNumberText.innerHTML = (secondNumber);
+          // Show updated secondNumber on calculator's display
+          secondNumberText.innerHTML = secondNumber;
         } 
-        //if isOperatorSelected is false, capture user selection as part of firstNumber
+        // If isOperatorSelected is false, capture user selection as part of firstNumber
         else {
-          //add string version of selected number to firstNumber variable
+          // Add string version of selected number to firstNumber variable
           firstNumber += this.value;
-          //show updated firstNumber on calculator's display
-          firstNumberText.innerHTML = (firstNumber);
+          // Show updated firstNumber on calculator's display
+          firstNumberText.innerHTML = firstNumber;
         }
     });
   }
 
-  //this function executes when user clicks on an operator symbol
-  for (i = 0; i < operators.length; i++) {
-    operators[i].addEventListener("click", function(event) {
-    //do not allow user to select operator if firstNumber is empty
+  // This function executes when user clicks on an operator symbol
+  for (let i = 0; i < operators.length; i++) {
+    operators[i].addEventListener("click", function() {
+      // Do not allow user to select operator if firstNumber is empty
       if (firstNumber === "") {
         return;
       }
 
-      //operator symbol after equal sign -> use result as firstNumber and clear rest
+      // Operator symbol after equal sign -> use result as firstNumber and clear rest
       if (isCalculated) {
         firstNumber = result;
-        firstNumberText.innerHTML = (firstNumber);
+        firstNumberText.innerHTML = firstNumber;
         secondNumber = "";
         secondNumberText.innerHTML = "";
         resultText.innerHTML = "";
         isCalculated = false;
       }
 
-      //operator symbol after secondNumber, but before equal sign -> conduct prev operation, use result as firstNumber, and clear rest (except isOperatorSelected)
+      // Operator symbol after secondNumber, but before equal sign -> conduct prev operation, use result as firstNumber, and clear rest (except isOperatorSelected)
       if (secondNumber != "") {
         equal.click();
         firstNumber = result;
-        firstNumberText.innerHTML = (firstNumber);
+        firstNumberText.innerHTML = firstNumber;
         secondNumber = "";
         secondNumberText.innerHTML = "";
         resultText.innerHTML = "";
         isCalculated = false;
       }
 
-      //update isOperatorSelected to true so we know firstNumber is complete
+      // Update isOperatorSelected to true so we know firstNumber is complete
       isOperatorSelected = true;
-      //set operator variale to string version of selected operator
+      // Set operator variale to string version of selected operator
       operator = this.value;
-      //show the operator symbol selected on calculator's display
-      operatorText.innerHTML = (this.textContent);
+      // Show the operator symbol selected on calculator's display
+      operatorText.innerHTML = this.textContent;
     });
   }
 
-  //this function executes when user clicks on the equal sign
-  equal.addEventListener("click", function(event) {
-    //do not allow user to select equal sign if firstNumber is empty
+  // This function executes when user clicks on the equal sign
+  equal.addEventListener("click", function() {
+    // Do not allow user to select equal sign if firstNumber is empty
     if (firstNumber === "") {
       return;
     }
 
-    //set result to firstNumber if equal pressed before operator
+    // Set result to firstNumber if equal pressed before operator
     if (!isOperatorSelected) {
       result = firstNumber;
-      resultText.innerHTML = (result);
+      resultText.innerHTML = result;
       isCalculated = true;
       return;
     }
 
-    //use firstNumber as both numbers if secondNumber empty
-    if(secondNumber === ""){
+    // Use firstNumber as both numbers if secondNumber empty
+    if (secondNumber === ""){
       secondNumber = firstNumber;
-      secondNumberText.innerHTML = (secondNumber);
+      secondNumberText.innerHTML = secondNumber;
     }
 
-    //equal pressed twice in a row
+    // Equal pressed twice in a row
     if (isCalculated) {
       firstNumber = result;
-      firstNumberText.innerHTML = (firstNumber);
+      firstNumberText.innerHTML = firstNumber;
     }
 
-    //update isCalculated to keep track if a calculation has occurred
+    // Update isCalculated to keep track if a calculation has occurred
     isCalculated = true;
-    //type cast our numbers to actual integers
+    // Type cast our numbers to actual integers
     firstNumber = parseInt(firstNumber);
     secondNumber = parseInt(secondNumber);
-    //determine which operation to use on our two numbers
+    // Determine which operation to use on our two numbers
     if (operator === "plus") {
       result = firstNumber + secondNumber;
     } else if (operator === "minus") {
@@ -141,7 +145,7 @@ window.onload = function() {
     } else if (operator === "times") {
       result = firstNumber * secondNumber;
     } else if (operator === "divide") {
-      //ensure no division by zero
+      // Ensure no division by zero
       if (secondNumber != 0) {
         result = firstNumber / secondNumber;
       } else {
@@ -150,16 +154,16 @@ window.onload = function() {
     } else if (operator === "power") {
       result = Math.pow(firstNumber, secondNumber);
     }
-    //display result text on calculator's display
+    // Display result text on calculator's display
     resultText.innerHTML = result;
-    //set result to zero if currently equal to undefined
+    // Set result to zero if currently equal to undefined
     if (result === "Undefined!") {
       result = parseInt(0);
     }
   });
 
-  //this function executes when user clicks on the clear button
-  clear.addEventListener("click", function(event) {
+  // This function executes when user clicks on the clear button
+  clear.addEventListener("click", function() {
     resetCalculator();
   });
 }
